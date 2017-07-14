@@ -41,7 +41,7 @@ int main(void){
 	vy[0] = 0;
 	vz[0] = 0;
 	//Llamo la funcion que calcula la aceleracion 
-	
+	//me lo mamamaaaaaaasjdasiofhasdiooghasuidghuiasgasgasdgasdgasdgasdgasdg
 	return 0;
 	*/
 }
