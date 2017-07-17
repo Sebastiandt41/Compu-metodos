@@ -1,25 +1,41 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define g 39.4793 //Unidades en UA 
+#define g 39.4793 //Unidades en UA y masas solares 
+
+//pasar a masas solares las cosas del archivo
+
+//como vamos a solucionar esta ecuacion diferencial loquete 
+
+
 
 
 int main(void)
 {
 //primero con dos planetas, ver apuntes 
 	FILE *in;
-	float m, x, y, z, vx, vy, vz;
+	float m[10];
+	float x[10];
+	float y[10];
+	float z[10];
+	float vx[10];
+	float vy[10];
+	float vz[10]; 
 	int i ;
-	char filename[100] = "coordinates.csv";	
-	in = fopen(filename, "r");	
+	char archivo[100] = "carol.csv";	
+	in = fopen(archivo, "r");	
 	for(i=0;i<10;i++)
 	{
-		fscanf(in, "%f, %f, %f, %f, %f, %f, %f\n", &m, &x, &y, &z, &vx, &vy, &vz);
-		printf("m= %f\n",m);
+		fscanf(in, "%f, %f, %f, %f, %f, %f, %f\n", &m[i], &x[i], &y[i], &z[i], &vx[i], &vy[i], &vz[i]);
+		//printf("m= %f\n",m);
 	}
+	printf("PosicionX = %f\n",x[0]);
+	printf("PosicionY = %f\n",y[0]);
 	fclose(in);
 	return 0;
-
+	
+	
+}
 	/*//distancias en AU 
 	float masa;
 	float posx[100];
@@ -46,7 +62,7 @@ int main(void)
 	
 	return 0;
 	*/
-}
+
 
 
 	
