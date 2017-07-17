@@ -31,7 +31,7 @@ posx = int(0.5*len(x))
 posy = int(0.3333333*len(y))
 
 #z[1:-1,1:-1]=2.0*np.exp(-((x-posx)**2/0.01+(y-posy)**2/0.01))
-z[:,:]=2.0*np.exp(-((x-posx)**2/2*dx**2+(y-posy)**2/2*dy**2))
+#z[:,:]=2.0*np.exp(-((x-posx)**2/2*dx**2+(y-posy)**2/2*dy**2))
 z[posx,posy]=-0.5    #Perturbacion
 z[0,:]=0
 z[-1,:]=0
@@ -47,7 +47,7 @@ z[:,-1]=0
 #plt.close()
 
 z1 = np.zeros((puntos,puntos))
-z1[:,:]=2.0*np.exp(-((x-posx)**2/0.01+(y-posy)**2/0.01))
+#z1[:,:]=2.0*np.exp(-((x-posx)**2/0.01+(y-posy)**2/0.01))
 z1[posx,posy]=-0.5
 #z1[1:-1,1:-1]=2
 for i in range(1,puntos-1):
@@ -80,6 +80,8 @@ while t<tfinal:
 	z_fut[-1,:]=0
 	z_fut[:,0]=0
 	z_fut[:,-1]=0
+	z_fut[:posx-1,2*posy]=0 #Rendija?
+	z_fut[posx+1:,2*posy]=0 #Rendija?
 	#z_fut[:,0]=z_fut[:,1]
 	#z_fut[:,puntos-1]=z_fut[:,puntos-2]
 	#z_fut[0,:]=z_fut[1,:]
@@ -106,7 +108,7 @@ fig = plt.figure()
 ax = fig.add_subplot(111,projection ='3d')
 sup = ax.plot_surface(X,Y,estados[15],rstride=1,cstride=1,cmap ='summer')
 fig.colorbar(sup,shrink=0.5,aspect=5)
-ax.set_zlim(-0.3,0.3)
+ax.set_zlim(-2,2)
 ax.set_xlabel("x")
 ax.set_ylabel("y")
 plt.show()
@@ -116,7 +118,7 @@ def animar(i):
 	estado = estados[i]
 	ax.clear()
 	sup = ax.plot_surface(X,Y,estado,rstride=1,cstride=1,cmap ='summer')
-	ax.set_zlim(-0.3,0.3)	
+	ax.set_zlim(-2,2)	
 #ax.set_zlim(-2.5,2.5)	
 	return sup,
 
