@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 #define g 39.4793 //Unidades en UA y masas solares 
 
@@ -63,19 +64,23 @@ int inde(int i,int j)
 	return 10*i+j;
 }
 
-float distancing (float xo,float xi,float y0,float y1,float
-
-float acelex(float x,float y,float m)
+float distancing (float xo,float xi,float y0,float y1,float z0, float z1)
 {
-acelex = g*
-}
-float acelex(float x,float y,float m)
-{
-}
-float acelex(float x,float y,float m)
-{
+ float distancia = sqrt(pow(x1-x0,2.0)+pow(y1-y0,2.0)+pow(z1-z0,2.0));
+return distancia;
 }
 
+float acelex(float x0,float xi,float m,float r)
+{
+acelex = g*m*(x-x1)/pow(r,3.0)
+}
+/*float aceley(float x,float y,float m)
+{
+}
+float acelez(float x,float y,float m)
+{
+}
+*/
 
 
 
