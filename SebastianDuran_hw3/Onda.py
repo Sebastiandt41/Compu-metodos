@@ -5,20 +5,21 @@ from matplotlib import cm
 import matplotlib.animation as animation
 
 
-puntos = 30
+puntos = 60
 a = 0.0
 b = 30
 c = 1.0
 x = np.linspace(a,b,puntos)
 y = np.linspace(a,b,puntos)
-tfinal = 30
+tfinal = 120
 
 nu = 1.0
 sigma = 0.3
 dx = b-a/puntos-1.0
 dy = b-a/puntos-1.0
 dt = sigma*dx**2/c
-alpha = (c*dt**2)/dx**2
+#alpha = (c*dt**2)/dx**2
+alpha = 0.5
 z = np.zeros((puntos,puntos))
 X,Y = np.meshgrid(x,y)
 #z =
@@ -71,6 +72,7 @@ estados.append(z1)
 #def pard():
 while t<tfinal:
 	#z_actual[posx,posy]=-0.5
+	#z_actual[:,:]=2.0*np.exp(-((x-posx)**2/0.01+(y-posy)**2/0.01))
 	for i in range(1,puntos-1):
 		for j in range(1, puntos-1):
 			z_fut[i,j] = 2*z_actual[i,j]-z_past[i,j]+alpha*(z_actual[i+1,j]-2*z_actual[i,j]+z_actual[i-1,j])+alpha*(z_actual[i,j+1]-2*z_actual[i,j]+z_actual[i,j-1])
@@ -102,9 +104,9 @@ while t<tfinal:
 
 fig = plt.figure()
 ax = fig.add_subplot(111,projection ='3d')
-sup = ax.plot_surface(X,Y,estados[0],rstride=1,cstride=1,cmap ='plasma')
+sup = ax.plot_surface(X,Y,estados[15],rstride=1,cstride=1,cmap ='summer')
 fig.colorbar(sup,shrink=0.5,aspect=5)
-#ax.set_zlim(-2.5,2.5)
+ax.set_zlim(-0.3,0.3)
 ax.set_xlabel("x")
 ax.set_ylabel("y")
 plt.show()
@@ -113,15 +115,13 @@ plt.close()
 def animar(i):
 	estado = estados[i]
 	ax.clear()
-	sup = ax.plot_surface(X,Y,estado,rstride=1,cstride=1,cmap ='plasma')
-	fig.colorbar(sup,shrink=0.5,aspect=5)
-#ax.set_zlim(-2.5,2.5)
-	ax.set_xlabel("x")
-	ax.set_ylabel("y")
+	sup = ax.plot_surface(X,Y,estado,rstride=1,cstride=1,cmap ='summer')
+	ax.set_zlim(-0.3,0.3)	
+#ax.set_zlim(-2.5,2.5)	
 	return sup,
 
 ani = animation.FuncAnimation(fig,animar,tfinal,interval=25,blit=False)
-ani.save("Ondaf1.mp4",writer="ffmpeg",fps=1)
+ani.save("Oonndsif1.mp4",writer="ffmpeg",fps=15)
 plt.show()
 plt.close()
 
