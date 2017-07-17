@@ -63,6 +63,8 @@ int inde(int i,int j)
 	return 10*i+j;
 }
 
+float distancing (float xo,float xi,float y0,float y1,float
+
 float acelex(float x,float y,float m)
 {
 acelex = g*
