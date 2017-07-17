@@ -7,20 +7,30 @@
 
 //como vamos a solucionar esta ecuacion diferencial loquete 
 
+//10 AÑOS CON DT 0.01 SON 10000 POSICIONES , LUEGO SON 250 AÑOS CREO PARA LA VUELTA COMPLETA
 
-
-
+int inde(int i,int j);
 int main(void)
 {
 //primero con dos planetas, ver apuntes 
 	FILE *in;
-	float m[10];
+
+	/*float m[10];
 	float x[10];
 	float y[10];
 	float z[10];
 	float vx[10];
 	float vy[10];
 	float vz[10]; 
+	*/
+	float m[10];
+	float *x = malloc((10*10000)*sizeof(float));
+	float *y = malloc((10*10000)*sizeof(float));
+	float *z = malloc((10*10000)*sizeof(float));
+	float *vx = malloc((10*10000)*sizeof(float));
+	float *vy = malloc((10*10000)*sizeof(float));
+	float *vz = malloc((10*10000)*sizeof(float));
+
 	int i ;
 	char archivo[100] = "carol.csv";	
 	in = fopen(archivo, "r");	
@@ -29,13 +39,44 @@ int main(void)
 		fscanf(in, "%f, %f, %f, %f, %f, %f, %f\n", &m[i], &x[i], &y[i], &z[i], &vx[i], &vy[i], &vz[i]);
 		//printf("m= %f\n",m);
 	}
-	printf("PosicionX = %f\n",x[0]);
-	printf("PosicionY = %f\n",y[0]);
+	printf("PosicionX = %f\n",x[9]);
+	printf("PosicionY = %f\n",y[9]);
 	fclose(in);
-	return 0;
+
+	/*
+	posx[0] = x
+	posy[0] = y
+	posz[0] = z
+	velx[0] = vx
+	vely[0] = v
+	*/
 	
+	return 0;	
 	
 }
+
+
+
+
+int inde(int i,int j)
+{
+	return 10*i+j;
+}
+
+float acelex(float x,float y,float m)
+{
+acelex = g*
+}
+float acelex(float x,float y,float m)
+{
+}
+float acelex(float x,float y,float m)
+{
+}
+
+
+
+
 	/*//distancias en AU 
 	float masa;
 	float posx[100];
