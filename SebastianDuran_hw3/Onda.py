@@ -7,7 +7,7 @@ import matplotlib.animation as animation
 
 puntos = 60
 a = 0.0
-b = 30
+b = 30.0
 c = 1.0
 x = np.linspace(a,b,puntos)
 y = np.linspace(a,b,puntos)
@@ -15,13 +15,19 @@ tfinal = 120
 
 nu = 1.0
 sigma = 0.3
-dx = b-a/puntos-1.0
+dx = (b-a)/60.0-1.0
 dy = b-a/puntos-1.0
-dt = sigma*dx**2/c
+#dt = sigma*(dx**2/c
 #alpha = (c*dt**2)/dx**2
 alpha = 0.5
+dt = 0.5*dx**2
+print dt
 z = np.zeros((puntos,puntos))
 X,Y = np.meshgrid(x,y)
+n= 60/dt
+#n1=int(n)
+n1=60
+print n1,n
 #z =
 
 
@@ -70,7 +76,7 @@ estados.append(z)
 estados.append(z1)
 
 #def pard():
-while t<tfinal:
+while t<n1:
 	#z_actual[posx,posy]=-0.5
 	#z_actual[:,:]=2.0*np.exp(-((x-posx)**2/0.01+(y-posy)**2/0.01))
 	for i in range(1,puntos-1):
@@ -80,8 +86,8 @@ while t<tfinal:
 	z_fut[-1,:]=0
 	z_fut[:,0]=0
 	z_fut[:,-1]=0
-	z_fut[:posx-1,2*posy]=0 #Rendija?
-	z_fut[posx+1:,2*posy]=0 #Rendija?
+	z_fut[:posx-4,2*posy]=0#Rendija
+	z_fut[posx+4:,2*posy]=0 #Rendija
 	#z_fut[:,0]=z_fut[:,1]
 	#z_fut[:,puntos-1]=z_fut[:,puntos-2]
 	#z_fut[0,:]=z_fut[1,:]
@@ -106,24 +112,25 @@ while t<tfinal:
 
 fig = plt.figure()
 ax = fig.add_subplot(111,projection ='3d')
-sup = ax.plot_surface(X,Y,estados[15],rstride=1,cstride=1,cmap ='summer')
-fig.colorbar(sup,shrink=0.5,aspect=5)
+sup = ax.plot_surface(X,Y,estados[1],rstride=1,cstride=1,cmap ='summer')
+#fig.colorbar(sup,shrink=0.5,aspect=5)
 ax.set_zlim(-2,2)
 ax.set_xlabel("x")
 ax.set_ylabel("y")
 plt.show()
+ax.clear()
 plt.close()
 
 def animar(i):
-	estado = estados[i]
 	ax.clear()
-	sup = ax.plot_surface(X,Y,estado,rstride=1,cstride=1,cmap ='summer')
+	estado = estados[i]	
+	sup = ax.plot_surface(X,Y,estado,rstride=1,cstride=1,color ='r')
 	ax.set_zlim(-2,2)	
 #ax.set_zlim(-2.5,2.5)	
 	return sup,
 
-ani = animation.FuncAnimation(fig,animar,tfinal,interval=25,blit=False)
-ani.save("Oonndsif1.mp4",writer="ffmpeg",fps=15)
+ani = animation.FuncAnimation(fig,animar,n1,interval=25,blit=False)
+ani.save("Ondaf1.mp4",writer="ffmpeg",fps=15)
 plt.show()
 plt.close()
 
