@@ -45,41 +45,51 @@ int main(void)
 	printf("PosicionY = %f\n",y[9]);
 	fclose(in);
 
-	for(t=0;t<tfinal;t++){
-		for(y=0;y<10;y++){
-		int indize = inde(y-1,t);
-		float x0 = x[indize]
-		float y0 = 
-			
+	for(t=1;t<tfinal;t++)
+	{
+		for(y=0;y<10;y++)
+		{
+		int indize = inde(t-1,y);
+		float x0 = x[indize];
+		float y0 = y[indize];
+		float z0 = z[indize];
+		//float m0 = m[y]
 	//creo mis sumas pero aqui al final de este for necesito guardar las aceleraciones de todos mis planetas quietos para hacer leap frog 
-			sumax = 0;
-
-			for(o=0;o<10;o++){
-			//COJO LO MIO Y LO COMPARO CON LOS DEMAS
-			
-			if (o!=y){
-			acelex()
+		Ax = 0;
+		Ay = 0;
+		Az = 0;
 	
+			for(o=0;o<10;o++)
+			{
+					
+			//COJO LO MIO Y LO COMPARO CON LOS DEMAS		
+				if (o!=y){
+					int indizo = inde(t-1,o);
+				float x1 = x[indizo];
+				float y1 = y[indizo];
+				float z1 = z[indizo];
+				float m1 = m[o];
+				float dist = distancing(x0,x1,y0,y1,z0,z1);
+					Ax+= acele(x0,x1,m1,dist);
+					Ay+= acele(y0,y1,m1,dist);
+					Az+= acele(z0,z1,m1,dist);
+					}
+			}
+		Vx[indize] = Vx[indize] + 0.5*Ax*dt;
+		Vy[indize] = Vy[indize] + 0.5*Ay*dt;
+		Vz[indize] = Vz[indize] + 0.5*Az*dt;
+
+		int index2 = inde(t,y);
+
+		x[index2] = x[indize]+0.5*Vx[indize]*dt
+		y[index2] = y[indize]+0.5*Vy[indize]*dt
+		z[index2] = z[indize]+0.5*Vz[indize]*dt
+
+
+		
+
+		}
 	}
-			
-}
-}
-}
-	
-
-
-
-
-
-
-	/*
-	posx[0] = x
-	posy[0] = y
-	posz[0] = z
-	velx[0] = vx
-	vely[0] = v
-	*/
-	
 	return 0;	
 	
 }
@@ -87,9 +97,9 @@ int main(void)
 
 
 
-int inde(int i,int j)
+int inde(int t,int p)
 {
-	return 10*i+j;
+	return 10*t+p;
 }
 
 float distancing (float xo,float xi,float y0,float y1,float z0, float z1)
@@ -98,23 +108,11 @@ float distancing (float xo,float xi,float y0,float y1,float z0, float z1)
 return distancia;
 }
 
-float acelex(float x0,float xi,float m,float r)
+float acele(float yo,float el,float m,float r)
 {
-acelex = g*m*(x-x1)/pow(r,3.0);
-return acelex;
+acelex = g*m*(el-yo)/pow(r,3.0);
+return acele;
 }
-float aceley(float y,float y1,float m,float r)
-{
-aceley = g*m*(y-y1)/pow(r,3.0);
-return aceley;
-}
-float acelez(float x,float y,float m, float r)
-{
-acelez = g*m*(z-z1)/pow(r,3.0);
-return acelez;
-}
-
-
 
 
 	/*//distancias en AU 
