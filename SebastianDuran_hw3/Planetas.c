@@ -62,7 +62,8 @@ int main(void)
 
 int inde(int p,int t)
 {
-	return 10000*p+t;
+	float ttotal = 10000;
+	return ttotal*p+t;
 }
 
 float distancing (float x0,float x1,float y0,float y1,float z0, float z1)
