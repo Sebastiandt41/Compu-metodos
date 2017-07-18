@@ -8,7 +8,7 @@
 
 //como vamos a solucionar esta ecuacion diferencial loquete 
 
-//10 AÑOS CON DT 0.01 SON 10000 POSICIONES , LUEGO SON 250 AÑOS CREO PARA LA VUELTA COMPLETA
+//10 AÑOS CON DT 0.001 SON 10000 POSICIONES , LUEGO SON 250 AÑOS CREO PARA LA VUELTA COMPLETA
 
 int inde(int i,int j);
 int main(void)
@@ -24,6 +24,7 @@ int main(void)
 	float vy[10];
 	float vz[10]; 
 	*/
+	int tfinal = 10000
 	float m[10];
 	float *x = malloc((10*10000)*sizeof(float));
 	float *y = malloc((10*10000)*sizeof(float));
@@ -31,7 +32,7 @@ int main(void)
 	float *vx = malloc((10*10000)*sizeof(float));
 	float *vy = malloc((10*10000)*sizeof(float));
 	float *vz = malloc((10*10000)*sizeof(float));
-
+	float dt = 0.001
 	int i ;
 	char archivo[100] = "carol.csv";	
 	in = fopen(archivo, "r");	
@@ -43,6 +44,33 @@ int main(void)
 	printf("PosicionX = %f\n",x[9]);
 	printf("PosicionY = %f\n",y[9]);
 	fclose(in);
+
+	for(t=0;t<tfinal;t++){
+		for(y=0;y<10;y++){
+		int indize = inde(y-1,t);
+		float x0 = x[indize]
+		float y0 = 
+			
+	//creo mis sumas pero aqui al final de este for necesito guardar las aceleraciones de todos mis planetas quietos para hacer leap frog 
+			sumax = 0;
+
+			for(o=0;o<10;o++){
+			//COJO LO MIO Y LO COMPARO CON LOS DEMAS
+			
+			if (o!=y){
+			acelex()
+	
+	}
+			
+}
+}
+}
+	
+
+
+
+
+
 
 	/*
 	posx[0] = x
@@ -72,15 +100,20 @@ return distancia;
 
 float acelex(float x0,float xi,float m,float r)
 {
-acelex = g*m*(x-x1)/pow(r,3.0)
+acelex = g*m*(x-x1)/pow(r,3.0);
+return acelex;
 }
-/*float aceley(float x,float y,float m)
+float aceley(float y,float y1,float m,float r)
 {
+aceley = g*m*(y-y1)/pow(r,3.0);
+return aceley;
 }
-float acelez(float x,float y,float m)
+float acelez(float x,float y,float m, float r)
 {
+acelez = g*m*(z-z1)/pow(r,3.0);
+return acelez;
 }
-*/
+
 
 
 
