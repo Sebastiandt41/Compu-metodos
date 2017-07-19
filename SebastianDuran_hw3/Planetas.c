@@ -24,24 +24,24 @@ float cambio_masa(float m);
 int main(void)
 {
 	FILE *in;
-	float dt = 0.001
+	float dt = 0.1;
 	int tfinal = 10000;
 	float *mkg = malloc(10*sizeof(float));
 	float *m = malloc(10*sizeof(float));
-	float *x = malloc((10*tfinal)*sizeof(float));
+	float *x = malloc((10*10000)*sizeof(float));
 	float *y = malloc((10*10000)*sizeof(float));
 	float *z = malloc((10*10000)*sizeof(float));
-	float *vxi = malloc((10)*sizeof(float));
-	float *vyi = malloc((10)*sizeof(float));
-	float *vzi = malloc((10)*sizeof(float));
+	float *vxi = malloc(10*sizeof(float));
+	float *vyi = malloc(10*sizeof(float));
+	float *vzi = malloc(10*sizeof(float));
 	float *vx = malloc((10*10000)*sizeof(float));
 	float *vy = malloc((10*10000)*sizeof(float));
 	float *vz = malloc((10*10000)*sizeof(float));
-	float *ax = malloc((10)*sizeof(float));
-	float *ay = malloc((10)*sizeof(float));
-	float *az = malloc((10)*sizeof(float));
+	float *ax = malloc(10*sizeof(float));
+	float *ay = malloc(10*sizeof(float));
+	float *az = malloc(10*sizeof(float));
 	
-	int i ;
+	int i,k,pi;
 	int ii;
 	int t;
 	//LEO EL ARCHIVO
@@ -58,6 +58,7 @@ int main(void)
 	m[i]=cambio_masa(mkg[i]);
 	//printf("m2= %f\n",m[i]); PRUEBA QUE LA MASA FUNCIONA
 	}
+	void aceleracion(float x
 	//Primeras aceleraciones t = 0
 	for(i=0;i<10;i++){
 	ax[i]=0;
@@ -75,42 +76,51 @@ int main(void)
 	//printf("Aceleracion en i = %f\n",ax[i]); PRUEBA QUE LA ACELERACION FUNCIONA
 	}
 	//Calculo los siguientes pasos de mis aceleraciones, velocidades, posiciones
-	for(t=1;t<tfinal;i++)
-	{
+	for(t=1;t<tfinal;t++)
+	{	
 		for(i=0;i<10;i++)
 	{
 		int ind_fut = indice(i,t);
 		int ind_past = indice(i,t-1);
 
-		vxi[i]=x[ind_past]+0.5*ax[i]*dt;
-		vyi[i]=y[ind_past]+0.5*ay[i]*dt;
-		vzi[i]=z[ind_past]+0.5*az[i]*dt;
+		vxi[i]=vx[ind_past]+0.5*ax[i]*dt;
+		vyi[i]=vy[ind_past]+0.5*ay[i]*dt;
+		vzi[i]=vz[ind_past]+0.5*az[i]*dt;
 		
 		x[ind_fut]= x[ind_past]+vxi[i]*dt;
 		y[ind_fut]= y[ind_past]+vyi[i]*dt;
-		z[ind_fut]= z[ind_past]+vyz[i]*dt;
+		z[ind_fut]= z[ind_past]+vzi[i]*dt;
+	
+		vx[ind_fut] =vxi[i]+0.5*ax[i]*dt;
+		vy[ind_fut] =vyi[i]+0.5*ay[i]*dt;
+		vz[ind_fut] =vzi[i]+0.5*az[i]*dt;
 		
 	}
-		for(i=0;i<10;i++)
+	//printf("x=%f\n",x[t]);
+
+		for(k=0;k<10;k++)
 	{
-		int iond= indice(i,t);
-		int iind= indice(ii,t);
-		ax[i] = 0;
-		ay[i] = 0;
-		az[i] = 0;
-		for(ii=0;ii<10;ii++)
+		int iond= indice(k,t);		
+		ax[k] = 0;
+		ay[k] = 0;
+		az[k] = 0;
+		for(pi=0;pi<10;pi++)		
 		{
-		if(i!=ii)
-		{
-		float dist = distancing(x[iond],x[iind,y[iond],y[iind],z[iond],z[iind]);
-		ax[i]+=	acele(x[iond],x[iind],m[iind],dist);
-		ay[i]+= acele(y[iond],y[iind],m[iind],dist);
-		az[i]+= acele(z[iond],z[iind],m[iind],dist);
+		int iind= indice(pi,t);
+		if(k!=pi)
+		{		
+		float disto = distancing(x[iond],x[iind],y[iond],y[iind],z[iond],z[iind]);
+		ax[k]+=	acele(x[iond],x[iind],m[iind],disto);
+		ay[k]+= acele(y[iond],y[iind],m[iind],disto);
+		az[k]+= acele(z[iond],z[iind],m[iind],disto);
 		}			
 		}
-	}
+		
+	}		
+	printf("x=%f\n",x[t]);
 	}
 
+	
 
 	/*calculo(m,x,y,z,vx,vy,vz);
 	for(i=0;i<1000;i++)
@@ -159,7 +169,7 @@ float acele(float yo,float el,float m,float r)
 return aceler;
 }
 
-void calculo(float *m,float *x,float *y,float *z,float *Vx,float *Vy, float *Vz)
+/*void calculo(float *m,float *x,float *y,float *z,float *Vx,float *Vy, float *Vz)
 {
 	float dt = 0.001;
 	int tfinal = 10000;
@@ -227,7 +237,7 @@ void calculo(float *m,float *x,float *y,float *z,float *Vx,float *Vy, float *Vz)
 
 }
 
-
+*/
 
 
 
