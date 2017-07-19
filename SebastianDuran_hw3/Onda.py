@@ -5,39 +5,30 @@ from matplotlib import cm
 import matplotlib.animation as animation
 
 
-puntos = 60
+damn = 200.0
+puntos = int(damn)
 a = 0.0
 b = 30.0
 c = 1.0
 x = np.linspace(a,b,puntos)
 y = np.linspace(a,b,puntos)
-tfinal = 120
-
 nu = 1.0
 sigma = 0.3
-dx = (b-a)/60.0-1.0
-dy = b-a/puntos-1.0
-#dt = sigma*(dx**2/c
-#alpha = (c*dt**2)/dx**2
+dx = (b-a)/(damn-1.0)
+dy = (b-a)/(damn-1.0)
 alpha = 0.5
-dt = 0.5*dx**2
-print dt
+dt = np.sqrt(0.5)*dx**2
 z = np.zeros((puntos,puntos))
 X,Y = np.meshgrid(x,y)
-n= 60/dt
-#n1=int(n)
-n1=60
-print n1,n
-#z =
+n= 60.0/dt
+n1=int(n)
 
-
-#print z[:,0],z[0,:],z[:,-1],z[-1,:]
 
 posx = int(0.5*len(x))
 posy = int(0.3333333*len(y))
 
 #z[1:-1,1:-1]=2.0*np.exp(-((x-posx)**2/0.01+(y-posy)**2/0.01))
-#z[:,:]=2.0*np.exp(-((x-posx)**2/2*dx**2+(y-posy)**2/2*dy**2))
+#z[:,:]=-0.5*np.exp(-(((x-posx)**2/2*0.01)+((y-posy)**2/2*0.01)))
 z[posx,posy]=-0.5    #Perturbacion
 z[0,:]=0
 z[-1,:]=0
@@ -88,15 +79,65 @@ while t<n1:
 	z_fut[:,-1]=0
 	z_fut[:posx-4,2*posy]=0#Rendija
 	z_fut[posx+4:,2*posy]=0 #Rendija
-	#z_fut[:,0]=z_fut[:,1]
-	#z_fut[:,puntos-1]=z_fut[:,puntos-2]
-	#z_fut[0,:]=z_fut[1,:]
-	#z_fut[puntos-1,:]=z_fut[puntos-2,:]
+	
 	z_past= np.copy(z_actual)
 	z_actual = np.copy(z_fut)
 	estados.append(z_actual)
 	t+=1
-	#return z_actual
+
+t30 = int(30.0/dt)
+t60 = int(60.0/dt)
+
+fig = plt.figure()
+ax = fig.add_subplot(111,projection ='3d')
+sup = ax.plot_surface(X,Y,estados[t30],rstride=1,cstride=1,cmap = "seismic")
+fig.colorbar(sup,shrink=0.5,aspect=5)
+ax.set_zlim(-1,1)
+ax.set_xlabel(r"$x$")
+ax.set_ylabel(r"$y$")
+ax.set_zlabel(r"$phi$")
+#plt.save("Onda3D_t30.png")
+plt.show()
+plt.close()
+
+plt.imshow(estados[t30],cmap = "seismic",clim =(-0.08,0.08))
+plt.colorbar()
+#plt.save("Onda2D_t30.png")
+plt.show()
+plt.close()
+
+fig = plt.figure()
+ax = fig.add_subplot(111,projection ='3d')
+sup = ax.plot_surface(X,Y,estados[t60],rstride=1,cstride=1,cmap = "seismic")
+fig.colorbar(sup,shrink=0.5,aspect=5)
+ax.set_zlim(-1,1)
+ax.set_xlabel(r"$x$")
+ax.set_ylabel(r"$y$")
+ax.set_zlabel(r"$phi$")
+#plt.save("Onda3D_t60.png")
+plt.show()
+plt.close()
+
+plt.imshow(estados[t60],cmap = "seismic",clim =(-0.08,0.08))
+plt.colorbar()
+#plt.save("Onda2D_t60.png")
+plt.show()
+plt.close()
+
+def animar(i):
+	ax.clear()
+	ax.set_zlim(-1,1)
+	estado = estados[i]	
+	sup = ax.plot_surface(X,Y,estado,rstride=1,cstride=1,color ='r')		
+	return sup,
+
+ani = animation.FuncAnimation(fig,animar,n1,interval=5,blit=False)
+#ani.save("Ondaf1.mp4",writer="ffmpeg",fps=15)
+plt.show()
+plt.close()
+
+	
+	
 
 #fig = plt.figure()
 #ax = fig.add_subplot(111,projection ='3d')
@@ -109,35 +150,6 @@ while t<n1:
 #ani.save("Ondas.gif",writer="imagemagick")
 #plt.show()
 #plt.close()
-
-fig = plt.figure()
-ax = fig.add_subplot(111,projection ='3d')
-sup = ax.plot_surface(X,Y,estados[1],rstride=1,cstride=1,cmap ='summer')
-#fig.colorbar(sup,shrink=0.5,aspect=5)
-ax.set_zlim(-2,2)
-ax.set_xlabel("x")
-ax.set_ylabel("y")
-plt.show()
-ax.clear()
-plt.close()
-
-def animar(i):
-	ax.clear()
-	estado = estados[i]	
-	sup = ax.plot_surface(X,Y,estado,rstride=1,cstride=1,color ='r')
-	ax.set_zlim(-2,2)	
-#ax.set_zlim(-2.5,2.5)	
-	return sup,
-
-ani = animation.FuncAnimation(fig,animar,n1,interval=25,blit=False)
-ani.save("Ondaf1.mp4",writer="ffmpeg",fps=15)
-plt.show()
-plt.close()
-
-	
-	
-
-
 
 
 
