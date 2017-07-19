@@ -25,42 +25,61 @@ int main(void)
 {
 	FILE *in;
 
-
+	int tfinal = 10000;
 	float *mkg = malloc(10*sizeof(float));
 	float *m = malloc(10*sizeof(float));
-	float *x = malloc((10*10000)*sizeof(float));
+	float *x = malloc((10*tfinal)*sizeof(float));
 	float *y = malloc((10*10000)*sizeof(float));
 	float *z = malloc((10*10000)*sizeof(float));
 	float *vx = malloc((10*10000)*sizeof(float));
 	float *vy = malloc((10*10000)*sizeof(float));
 	float *vz = malloc((10*10000)*sizeof(float));
-	//float *ax = malloc((10*10000)*sizeof(float));
-	//float *ay = malloc((10*10000)*sizeof(float));
-	//float *az = malloc((10*10000)*sizeof(float));
+	float *ax = malloc((10)*sizeof(float));
+	float *ay = malloc((10)*sizeof(float));
+	float *az = malloc((10)*sizeof(float));
 	
 	int i ;
+	int ii;
+	int t;
 	//LEO EL ARCHIVO
 	char archivo[100] = "carol.csv";	
 	in = fopen(archivo, "r");	
 	for(i=0;i<10;i++)
 	{
 		fscanf(in, "%f, %f, %f, %f, %f, %f, %f\n", &mkg[i], &x[i], &y[i], &z[i], &vx[i], &vy[i], &vz[i]);
-		printf("m= %f\n",mkg[i]);
 	}
 	fclose(in);
-	
+	//Convierto las masas de kg a masas solares
 	for(i=0;i<10;i++)
 	{
 	m[i]=cambio_masa(mkg[i]);
-	printf("m2= %f\n",m[i]);
+	//printf("m2= %f\n",m[i]); PRUEBA QUE LA MASA FUNCIONA
 	}
-	
+	//Primeras aceleraciones t = 0
+	for(i=0;i<10;i++){
+	ax[i]=0;
+	ay[i]=0;
+	az[i]=0;
+		for(ii=0;ii<10;ii++)
+		{
+		if(i!=ii){
+		float dist = distancing(x[i],x[ii],y[i],y[ii],z[i],z[ii]);
+		ax[i]+=	acele(x[i],x[ii],m[ii],dist);
+		ay[i]+= acele(y[i],y[ii],m[ii],dist);
+		az[i]+= acele(z[i],z[ii],m[ii],dist);
+		}			
+		}
+	//printf("Aceleracion en i = %f\n",ax[i]); PRUEBA QUE LA ACELERACION FUNCIONA
+	}
+	//Calculo los siguientes pasos de mis aceleraciones, velocidades, posiciones
+	for(t=1;t<tfinal;
+
+
 	calculo(m,x,y,z,vx,vy,vz);
 	for(i=0;i<1000;i++)
 	{
 	printf("x = %f\n",x[i]);
 	}
-	
 
 	return 0;	
 	
@@ -82,7 +101,7 @@ float cambio_masa(float m)
 }
 float distancing (float x0,float x1,float y0,float y1,float z0, float z1)
 {
-	float distancia = sqrt((pow(x1-x0,2.0)+pow(y1-y0,2.0)+pow(z1-z0,2.0))+0.001);
+	float distancia = sqrt((pow(x1-x0,2.0)+pow(y1-y0,2.0)+pow(z1-z0,2.0))+0.01);
 	return distancia;
 }
 
