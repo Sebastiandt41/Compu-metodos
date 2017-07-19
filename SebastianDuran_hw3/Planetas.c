@@ -15,18 +15,18 @@ como vamos a solucionar esta ecuacion diferencial loquete
 
 //DECLARACION DE FUNCIONES
 
-int inde(int t,int p);
+int indice(int p,int t);
 float distancing (float xo,float xi,float y0,float y1,float z0, float z1);
 void calculo(float *m,float *x,float *y,float *z,float *Vx,float *Vy, float *Vz);
 float acele(float yo,float el,float m,float r);
+float cambio_masa(float m);
 //EL MAIN 
 int main(void)
 {
 	FILE *in;
 
-	
-	
 
+	float *mkg = malloc(10*sizeof(float));
 	float *m = malloc(10*sizeof(float));
 	float *x = malloc((10*10000)*sizeof(float));
 	float *y = malloc((10*10000)*sizeof(float));
@@ -34,6 +34,9 @@ int main(void)
 	float *vx = malloc((10*10000)*sizeof(float));
 	float *vy = malloc((10*10000)*sizeof(float));
 	float *vz = malloc((10*10000)*sizeof(float));
+	//float *ax = malloc((10*10000)*sizeof(float));
+	//float *ay = malloc((10*10000)*sizeof(float));
+	//float *az = malloc((10*10000)*sizeof(float));
 	
 	int i ;
 	//LEO EL ARCHIVO
@@ -41,17 +44,23 @@ int main(void)
 	in = fopen(archivo, "r");	
 	for(i=0;i<10;i++)
 	{
-		fscanf(in, "%f, %f, %f, %f, %f, %f, %f\n", &m[i], &x[i], &y[i], &z[i], &vx[i], &vy[i], &vz[i]);
-		//printf("m= %f\n",m);
+		fscanf(in, "%f, %f, %f, %f, %f, %f, %f\n", &mkg[i], &x[i], &y[i], &z[i], &vx[i], &vy[i], &vz[i]);
+		printf("m= %f\n",mkg[i]);
 	}
 	fclose(in);
 	
+	for(i=0;i<10;i++)
+	{
+	m[i]=cambio_masa(mkg[i]);
+	printf("m2= %f\n",m[i]);
+	}
+	
 	calculo(m,x,y,z,vx,vy,vz);
-	/*for(i=0;i<1000;i++)
+	for(i=0;i<1000;i++)
 	{
 	printf("x = %f\n",x[i]);
 	}
-	*/
+	
 
 	return 0;	
 	
@@ -60,22 +69,27 @@ int main(void)
 
 //DECLARO LAS DEMAS FUNCIONES 
 
-int inde(int p,int t)
+int indice(int p,int t)
 {
-	float ttotal = 10000;
-	return ttotal*p+t;
+	int t_total = 10000;
+	int posicion = t_total*t + p;
+	return posicion;
 }
-
+float cambio_masa(float m)
+{
+	float m1 = m*(1.0/1.9891E30);
+	return m1;
+}
 float distancing (float x0,float x1,float y0,float y1,float z0, float z1)
 {
-	float distancia = sqrt(pow(x1-x0,2.0)+pow(y1-y0,2.0)+pow(z1-z0,2.0)+0.01);
+	float distancia = sqrt((pow(x1-x0,2.0)+pow(y1-y0,2.0)+pow(z1-z0,2.0))+0.001);
 	return distancia;
 }
 
 float acele(float yo,float el,float m,float r)
 {
-	float acelex = g*m*(el-yo)/pow(r,3.0);
-return acelex;
+	float aceler = g*m*(el-yo)/pow(r,3.0);
+return aceler;
 }
 
 void calculo(float *m,float *x,float *y,float *z,float *Vx,float *Vy, float *Vz)
@@ -92,7 +106,7 @@ void calculo(float *m,float *x,float *y,float *z,float *Vx,float *Vy, float *Vz)
 		
 		for(p=0;p<10;p++)
 		{
-		ind1 = inde(p,t-1);
+		ind1 = indice(p,t-1);
 		 x0 = x[ind1];
 		 y0 = y[ind1];
 		 z0 = z[ind1];
@@ -105,21 +119,21 @@ void calculo(float *m,float *x,float *y,float *z,float *Vx,float *Vy, float *Vz)
 			{					
 					
 				if (o!=p){
-				ind2 = inde(o,t-1);
+				ind2 = indice(o,t-1);
 				 x1 = x[ind2];
 				 y1 = y[ind2];
 				 z1 = z[ind2];
 				 m1 = m[o];
-				 //dist = distancing(x0,x1,y0,y1,z0,z1);
-				dist = 1;
+				 dist = distancing(x0,x1,y0,y1,z0,z1);
+				
 					Ax+= acele(x0,x1,m1,dist);
 					Ay+= acele(y0,y1,m1,dist);
 					Az+= acele(z0,z1,m1,dist);
-				printf("x=%f\n",x1);
+				//printf("x=%f\n",x1);
 					}
 			}
 		
-		int index2 = inde(p,t);
+		int index2 = indice(p,t);
 	
 		if(t==1){
 		Vx[ind1] = Vx[ind1] + 0.5*Ax*dt;
@@ -145,6 +159,7 @@ void calculo(float *m,float *x,float *y,float *z,float *Vx,float *Vy, float *Vz)
 	}
 
 }
+
 
 
 
