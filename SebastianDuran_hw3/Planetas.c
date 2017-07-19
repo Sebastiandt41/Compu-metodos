@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 #include <math.h>
 
@@ -38,11 +39,40 @@ int main(void)
 	int ii;
 	int t;
 	//LEO EL ARCHIVO
-	char archivo[100] = "carol.csv";	
-	in = fopen(archivo, "r");	
-	for(i=0;i<10;i++)
+	char archivo[100] = "coordinates.csv";	
+	
+	in = fopen(archivo, "r");
+	int len =250;
+	char line_buffer[len];
+	char *split_buffer;
+	const char *delimiter;
+	delimiter =",";
+	int j=0;
+	i = 0;
+	while(fgets(line_buffer,len,in))
 	{
-		fscanf(in, "%f, %f, %f, %f, %f, %f, %f\n", &mkg[i], &x[i], &y[i], &z[i], &vx[i], &vy[i], &vz[i]);
+	split_buffer = strtok(line_buffer,delimiter);
+	while(split_buffer != NULL)
+	{
+	if(j==1)
+		mkg[i] = atof(split_buffer);
+	else if(j==2)
+		x[i] = atof(split_buffer);
+	else if(j==3)
+		y[i] = atof(split_buffer);
+	else if(j==4)
+		z[i] = atof(split_buffer);
+	else if(j==5)
+		vx[i] = atof(split_buffer);
+	else if(j==6)
+		vy[i] = atof(split_buffer);
+	else if(j==7)
+		vz[i] = atof(split_buffer);
+	split_buffer = strtok(NULL,delimiter);
+	j++;
+	}
+	j=0;
+	i++;
 	}
 	fclose(in);
 	//Convierto las masas de kg a masas solares
