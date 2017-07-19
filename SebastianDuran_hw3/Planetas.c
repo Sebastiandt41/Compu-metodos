@@ -24,13 +24,16 @@ float cambio_masa(float m);
 int main(void)
 {
 	FILE *in;
-
+	float dt = 0.001
 	int tfinal = 10000;
 	float *mkg = malloc(10*sizeof(float));
 	float *m = malloc(10*sizeof(float));
 	float *x = malloc((10*tfinal)*sizeof(float));
 	float *y = malloc((10*10000)*sizeof(float));
 	float *z = malloc((10*10000)*sizeof(float));
+	float *vxi = malloc((10)*sizeof(float));
+	float *vyi = malloc((10)*sizeof(float));
+	float *vzi = malloc((10)*sizeof(float));
 	float *vx = malloc((10*10000)*sizeof(float));
 	float *vy = malloc((10*10000)*sizeof(float));
 	float *vz = malloc((10*10000)*sizeof(float));
@@ -72,14 +75,49 @@ int main(void)
 	//printf("Aceleracion en i = %f\n",ax[i]); PRUEBA QUE LA ACELERACION FUNCIONA
 	}
 	//Calculo los siguientes pasos de mis aceleraciones, velocidades, posiciones
-	for(t=1;t<tfinal;
+	for(t=1;t<tfinal;i++)
+	{
+		for(i=0;i<10;i++)
+	{
+		int ind_fut = indice(i,t);
+		int ind_past = indice(i,t-1);
+
+		vxi[i]=x[ind_past]+0.5*ax[i]*dt;
+		vyi[i]=y[ind_past]+0.5*ay[i]*dt;
+		vzi[i]=z[ind_past]+0.5*az[i]*dt;
+		
+		x[ind_fut]= x[ind_past]+vxi[i]*dt;
+		y[ind_fut]= y[ind_past]+vyi[i]*dt;
+		z[ind_fut]= z[ind_past]+vyz[i]*dt;
+		
+	}
+		for(i=0;i<10;i++)
+	{
+		int iond= indice(i,t);
+		int iind= indice(ii,t);
+		ax[i] = 0;
+		ay[i] = 0;
+		az[i] = 0;
+		for(ii=0;ii<10;ii++)
+		{
+		if(i!=ii)
+		{
+		float dist = distancing(x[iond],x[iind,y[iond],y[iind],z[iond],z[iind]);
+		ax[i]+=	acele(x[iond],x[iind],m[iind],dist);
+		ay[i]+= acele(y[iond],y[iind],m[iind],dist);
+		az[i]+= acele(z[iond],z[iind],m[iind],dist);
+		}			
+		}
+	}
+	}
 
 
-	calculo(m,x,y,z,vx,vy,vz);
+	/*calculo(m,x,y,z,vx,vy,vz);
 	for(i=0;i<1000;i++)
 	{
 	printf("x = %f\n",x[i]);
 	}
+	*/
 
 	return 0;	
 	
@@ -88,12 +126,22 @@ int main(void)
 
 //DECLARO LAS DEMAS FUNCIONES 
 
-int indice(int p,int t)
+/*int indice(int p,int t) SI LE PIDO UN DATO A MI MEGA ARRAY
 {
 	int t_total = 10000;
 	int posicion = t_total*t + p;
 	return posicion;
 }
+*/
+
+//Si guardo un dato en el mega array 
+int indice(int p,int t) //SI guardo UN DATO A MI MEGA ARRAY
+{
+	int t_total = 10000;
+	int posicion = 10*t + p;
+	return posicion;
+}
+
 float cambio_masa(float m)
 {
 	float m1 = m*(1.0/1.9891E30);
