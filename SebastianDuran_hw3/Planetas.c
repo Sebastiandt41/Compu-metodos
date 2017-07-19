@@ -17,8 +17,7 @@ float acelerando(float ax , float ay, float az);
 int main(void)
 {
 	FILE *in;
-	float dt = 2.74E-3;
-	
+	float dt = 2.74E-3;	
 	int tfinal = 365*255;
 	float *mkg = malloc(10*sizeof(float));
 	float *m = malloc(10*sizeof(float));
