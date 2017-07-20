@@ -5,7 +5,7 @@ from matplotlib import cm
 import matplotlib.animation as animation
 
 
-damn = 50.0
+damn = 80.0
 puntos = int(damn)
 a = 0.0
 b = 30.0
@@ -90,51 +90,54 @@ t60 = int(60.0/dt)
 
 fig = plt.figure()
 ax = fig.add_subplot(111,projection ='3d')
-sup = ax.plot_surface(X,Y,estados[t30],rstride=1,cstride=1,cmap = "seismic")
+sup = ax.plot_surface(X,Y,estados[t30],rstride=2,cstride=2,cmap = "seismic")
 fig.colorbar(sup,shrink=0.5,aspect=5)
 ax.set_zlim(-1,1)
 ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$y$")
 ax.set_zlabel(r"$phi$")
-plt.save("Onda3D_t30.png")
+plt.savefig("Onda3D_t30.png")
 #plt.show()
 plt.close()
 
-plt.imshow(estados[t30],cmap = "seismic",clim =(-0.08,0.08))
+plt.imshow(estados[t30],cmap = "seismic")
 plt.colorbar()
-plt.save("Onda2D_t30.png")
+plt.savefig("Onda2D_t30.png")
 #plt.show()
 plt.close()
 
 fig = plt.figure()
 ax = fig.add_subplot(111,projection ='3d')
-sup = ax.plot_surface(X,Y,estados[t60],rstride=1,cstride=1,cmap = "seismic")
+sup = ax.plot_surface(X,Y,estados[t60],rstride=2,cstride=2,cmap = "seismic")
 fig.colorbar(sup,shrink=0.5,aspect=5)
 ax.set_zlim(-1,1)
 ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$y$")
 ax.set_zlabel(r"$phi$")
-plt.save("Onda3D_t60.png")
+plt.savefig("Onda3D_t60.png")
 #plt.show()
 plt.close()
 
-plt.imshow(estados[t60],cmap = "seismic",clim =(-0.08,0.08))
+plt.imshow(estados[t60],cmap = "seismic")
 plt.colorbar()
-plt.save("Onda2D_t60.png")
+plt.savefig("Onda2D_t60.png")
 #plt.show()
 plt.close()
+
+#figu,ax = plt.subplots()
+
 
 def animar(i):
 	ax.clear()
 	ax.set_zlim(-1,1)
 	estado = estados[i]	
-	sup = ax.plot_surface(X,Y,estado,rstride=1,cstride=1,color ='r')		
+	sup = ax.plot_surface(X,Y,estado,rstride=1,cstride=1,cmap = "seismic")		
 	return sup,
 
-ani = animation.FuncAnimation(fig,animar,n1,interval=5,blit=False)
-#ani.save("Ondaf1.mp4",writer="ffmpeg",fps=15)
-plt.show()
-plt.close()
+#ani = animation.FuncAnimation(fig,animar,n1,interval=5,blit=False)
+#ani.save("Onda.mp4",writer="ffmpeg",fps=14)
+#plt.show()
+#plt.close()
 
 	
 	
