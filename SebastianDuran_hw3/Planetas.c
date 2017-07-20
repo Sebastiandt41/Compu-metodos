@@ -5,41 +5,44 @@
 
 #define g 39.4793 //Unidades en UA y masas solares 
 
-//DECLARACION DE FUNCIONES
+//INICIALIZACION DE FUNCIONES
 
+//Esta funcion transforma indices matriciales en 2d a un indice en 1d
 int indice(int p,int t);
+//Funcion que calcula la distancia entre dos cuerpos
 float distancing (float xo,float xi,float y0,float y1,float z0, float z1);
-void calculo(float *m,float *x,float *y,float *z,float *Vx,float *Vy, float *Vz);
+//Funcion que calcula la aceleracion entre dos cuerpos
 float acele(float yo,float el,float m,float r);
+//Funcion que cambia las unidades de la masa (de kg a Masas solares)
 float cambio_masa(float m);
-float acelerando(float ax , float ay, float az);
+
 //EL MAIN 
 int main(void)
 {
 	FILE *in;
 	float dt = 2.74E-3;	
 	int tfinal = 365*255;
-	float *mkg = malloc(10*sizeof(float));
-	float *m = malloc(10*sizeof(float));
-	float *x = malloc((10*tfinal)*sizeof(float));
-	float *y = malloc((10*tfinal)*sizeof(float));
-	float *z = malloc((10*tfinal)*sizeof(float));
-	float *vxi = malloc(10*sizeof(float));
-	float *vyi = malloc(10*sizeof(float));
-	float *vzi = malloc(10*sizeof(float));
-	float *vx = malloc((10*tfinal)*sizeof(float));
-	float *vy = malloc((10*tfinal)*sizeof(float));
-	float *vz = malloc((10*tfinal)*sizeof(float));
-	float *ax = malloc(10*sizeof(float));
-	float *ay = malloc(10*sizeof(float));
-	float *az = malloc(10*sizeof(float));
+	int cuerpos = 10;
+	float *mkg = malloc(cuerpos*sizeof(float));
+	float *m = malloc(cuerpos*sizeof(float));
+	float *x = malloc((cuerpos*tfinal)*sizeof(float));
+	float *y = malloc((cuerpos*tfinal)*sizeof(float));
+	float *z = malloc((cuerpos*tfinal)*sizeof(float));
+	float *vxi = malloc(cuerpos*sizeof(float));
+	float *vyi = malloc(cuerpos*sizeof(float));
+	float *vzi = malloc(cuerpos*sizeof(float));
+	float *vx = malloc((cuerpos*tfinal)*sizeof(float));
+	float *vy = malloc((cuerpos*tfinal)*sizeof(float));
+	float *vz = malloc((cuerpos*tfinal)*sizeof(float));
+	float *ax = malloc(cuerpos*sizeof(float));
+	float *ay = malloc(cuerpos*sizeof(float));
+	float *az = malloc(cuerpos*sizeof(float));
 	
 	int i,k,pi;
 	int ii;
 	int t;
 	//LEO EL ARCHIVO
-	char archivo[100] = "coordinates.csv";	
-	
+	char archivo[100] = "coordinates.csv";		
 	in = fopen(archivo, "r");
 	int len =250;
 	char line_buffer[len];
@@ -77,10 +80,9 @@ int main(void)
 	//Convierto las masas de kg a masas solares
 	for(i=0;i<10;i++)
 	{
-	m[i]=cambio_masa(mkg[i]);
-	//printf("m2= %f\n",m[i]); PRUEBA QUE LA MASA FUNCIONA
-	}
-	//void aceleracion(float x //Primeras aceleraciones t = 0
+	m[i]=cambio_masa(mkg[i]);	
+	}	
+	//Calculo mis aceleraciones para t = 0
 	for(i=0;i<10;i++)
 	{
 	ax[i]=0;
@@ -94,20 +96,11 @@ int main(void)
 			ax[i]+=	acele(x[i],x[ii],m[ii],dist);
 			ay[i]+= acele(y[i],y[ii],m[ii],dist);
 			az[i]+= acele(z[i],z[ii],m[ii],dist);
-			}			
-	// //PRUEBA QUE LA ACELERACION FUNCIONA
+			}	
 		}
-	//printf("Aceleracion en i = %f\n",ax[i]);
 	}
-	//modifico las velocidades para desfasarlas 
-	//for(i=0;i<10;i++)
-	//{
-	//vx[i]= vx[i]-0.5*ax[i]*dt;
-	//vy[i]= vy[i]-0.5*ax[i]*dt;
-	//vz[i]= vz[i]-0.5*ax[i]*dt;	
-	//}
 	
-	//Calculo los siguientes pasos de mis aceleraciones, velocidades, posiciones
+	//Calculo las siguientes posiciones mediante la velocidad intermedia (Metodo de Leap -Frog), actualizo aceleraciones y velocidades
 	for(t=1;t<tfinal;t++)
 	{		
 		for(i=0;i<10;i++)
@@ -151,29 +144,18 @@ int main(void)
 			
 	}
 
-
+//Imprimo en la terminal las listas con las posiciones de todos los cuerpos del sistema en x,y,z
 for(i=0;i<tfinal*10;i++)
 {
 	printf("%f,%f,%f\n",x[i],y[i],z[i]);	
 }
-
-	return 0;
-
-	
+	return 0;	
 }
 
-//DECLARO LAS DEMAS FUNCIONES 
+//DECLARO LAS FUNCIONES 
 
-/*int indice(int p,int t) SI LE PIDO UN DATO A MI MEGA ARRAY
-{
-	int t_total = 10000;
-	int posicion = t_total*t + p;
-	return posicion;
-}
-*/
 
-//Si guardo un dato en el mega array 
-int indice(int p,int t) //SI guardo UN DATO A MI MEGA ARRAY
+int indice(int p,int t) 
 {
 	int posicion = 10*t + p;
 	return posicion;
@@ -181,8 +163,9 @@ int indice(int p,int t) //SI guardo UN DATO A MI MEGA ARRAY
 
 float cambio_masa(float m)
 {
-	float m1 = m*(1.0/1.9891E30);
-	return m1;
+	
+	m = m*(1.0/1.9891E30);
+	return m;
 }
 float distancing (float x0,float x1,float y0,float y1,float z0, float z1)
 {
@@ -195,29 +178,9 @@ float acele(float yo,float el,float m,float r)
 	float aceler = g*m*(el-yo)/(r*r*r);
 return aceler;
 }
-/*
-void acelerando(float ax , float ay, float az , float x0, float x1, float y0, float y1, float z1, float z1)
-{
-	float ax = 0;
-	float ay = 0;
-	float az = 0;
-	int i,ii;
-	for(i=0;i<10;i++)
-	{
-		for(ii=0;ii<10;ii++)
-		{
-		if(i!=ii){
-		float dist = distancing(x[i],x[ii],y[i],y[ii],z[i],z[ii]);
-		ax[i]+=	acele(x[i],x[ii],m[ii],dist);
-		ay[i]+= acele(y[i],y[ii],m[ii],dist);
-		az[i]+= acele(z[i],z[ii],m[ii],dist);
-		}			
-	//printf("Aceleracion en i = %f\n",ax[i]); //PRUEBA QUE LA ACELERACION FUNCIONA
-	}
 
-}
 
-*/
+
 
 
 

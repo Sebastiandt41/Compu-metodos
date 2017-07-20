@@ -4,9 +4,10 @@
 \usepackage{graphicx} %Paquete de graficos
 \usepackage[english]{babel} % English language/hyphenation
 \usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage{float}
 
 
-allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+%allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
 
 %----------------------------------------------------------------------------------------
 %	TITLE SECTION
@@ -33,18 +34,18 @@ allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, th
 
 \section{Onda en dos dimensiones}
 
-A partir de la solución de la ecuación de onda en dos dimensiones y las condiciones dadas se construyeron las siguientes graficas en dos y tres dimensiones respectivamente, la simulación dura aproximadamente 60 segundos.
+A partir de la solucion de la ecuacion de onda en dos dimensiones y las condiciones dadas se construyeron las siguientes graficas en dos y tres dimensiones respectivamente, la simulacion dura aproximadamente 60 segundos.
 \subsection{ 2D} 
 A continuacion se  muestran las graficas para el estado de la onda desde una vista de planta.
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{Onda2D_t30.png}
+	\includegraphics[scale = 0.8]{Onda2D_t30.png}
 	\caption{Estado de la onda para un tiempo de 30 segundos}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{Onda2D_t60.png}
+	\includegraphics[scale=0.8]{Onda2D_t60.png}
 	\caption{Estado de la onda para un tiempo de 60 segundos}
 \end{figure}
 
@@ -52,15 +53,15 @@ A continuacion se  muestran las graficas para el estado de la onda desde una vis
 \subsection{3D}
 A continuacion se muestran las graficas para el estado de la onda en 3 dimensiones
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{Onda3D_t30.png}
+	\includegraphics[scale=0.8]{Onda3D_t30.png}
 	\caption{Estado de la onda para un tiempo de 30 segundos}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{Onda3D_t60.png}
+	\includegraphics[scale=0.8]{Onda3D_t60.png}
 	\caption{Estado de la onda para un tiempo de 60 segundos}
 \end{figure}
 
@@ -68,8 +69,8 @@ A continuacion se muestran las graficas para el estado de la onda en 3 dimension
 
 \section{Sistema solar}
 
-A partir de la solución de la ecuación de movimiento para los planetas e implementando el metodo de Leap-frog se calcularon las orbitas de los planetas del sistema solar y el sol para un periodo de tiempo de 255 años.
-\begin{figure}[h]
+A partir de la solucion de la ecuacion de movimiento para los planetas e implementando el metodo de Leap-frog se calcularon las orbitas de los planetas del sistema solar y el sol para un periodo de tiempo de 255 anos.
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{orbitas.png}
 	\caption{Orbitas de los planetas del sistema solar}
