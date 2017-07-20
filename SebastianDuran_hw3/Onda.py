@@ -5,7 +5,7 @@ from matplotlib import cm
 import matplotlib.animation as animation
 
 
-damn = 200.0
+damn = 50.0
 puntos = int(damn)
 a = 0.0
 b = 30.0
@@ -96,14 +96,14 @@ ax.set_zlim(-1,1)
 ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$y$")
 ax.set_zlabel(r"$phi$")
-#plt.save("Onda3D_t30.png")
-plt.show()
+plt.save("Onda3D_t30.png")
+#plt.show()
 plt.close()
 
 plt.imshow(estados[t30],cmap = "seismic",clim =(-0.08,0.08))
 plt.colorbar()
-#plt.save("Onda2D_t30.png")
-plt.show()
+plt.save("Onda2D_t30.png")
+#plt.show()
 plt.close()
 
 fig = plt.figure()
@@ -114,14 +114,14 @@ ax.set_zlim(-1,1)
 ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$y$")
 ax.set_zlabel(r"$phi$")
-#plt.save("Onda3D_t60.png")
-plt.show()
+plt.save("Onda3D_t60.png")
+#plt.show()
 plt.close()
 
 plt.imshow(estados[t60],cmap = "seismic",clim =(-0.08,0.08))
 plt.colorbar()
-#plt.save("Onda2D_t60.png")
-plt.show()
+plt.save("Onda2D_t60.png")
+#plt.show()
 plt.close()
 
 def animar(i):
