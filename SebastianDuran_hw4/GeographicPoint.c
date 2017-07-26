@@ -26,12 +26,14 @@ int main(void)
 		for(i=0;i<largo;i++)
 		{
 		fscanf(in,"%d\n",&posicion[indice(i,j)]);
-		printf("posicion %d\n",posicion[indice(i,j)]);
+		//printf("posicion %d\n",posicion[indice(i,j)]);
 		}
 	}
 
-	float ra = radius(230,234,posicion);
-	//printf("ra = %f\n",ra);
+	int xa = aleatorio_x();
+	int ya = aleatorio_y();
+	float ra = radius(480,136,posicion);
+	printf("ra = %f\n",ra);
 	
 	//printf("aleatorios = %d %d\n",x_a,y_a);
 
@@ -68,9 +70,9 @@ int aleatorio_y()
 }
 float radius(int posx,int posy, int *posicion)
 {
-	int posix = posx; 
-	int posiy = posy;
-	if(posicion[indice(posix,posiy)]== 1)
+	int posix; 
+	int posiy;
+	if(posicion[indice(posx,posy)]== 1)
 	{
 	posix = aleatorio_x();
 	posiy = aleatorio_y();
@@ -83,9 +85,10 @@ float radius(int posx,int posy, int *posicion)
 	printf("fueron los mismos");
 	}
 	
+	float comp;
 	float r_max;
 	float r ;
-	for(r = 1; r < alto/2 ; r++)
+	for(r = 1; r < alto/4 ; r++)
 	{
 		for(i=0;i<r;i++)
 		{
@@ -93,20 +96,26 @@ float radius(int posx,int posy, int *posicion)
 			{
 				if(((i*i)+(j*j))<r*r)
 				{
-					if(posicion[indice(posix+i,posiy+j)]==0 && posicion[indice(posix-i,posiy-j)]==0 && posicion[indice(posix+i,posiy-j)]==0 && posicion[indice(posix-i,posiy+j)]==0)
+					//if(posicion[indice(posix+i,posiy+j)]==0 && posicion[indice(posix-i,posiy-j)]==0 && posicion[indice(posix+i,posiy-j)]==0 && posicion[indice(posix-i,posiy+j)]==0)
+					if(posicion[indice(posix+i,posiy)]==0 && posicion[indice(posix,posiy+j)]==0 && posicion[indice(posix-i,posiy)]==0 && posicion[indice(posix,posiy-j)]==0 && posicion[indice(posix+i,posiy+j)]==0 && posicion[indice(posix-i,posiy-j)]==0 && posicion[indice(posix+i,posiy-j)]==0 && posicion[indice(posix-i,posiy+j)]==0)
 					{
+						//if(posicion[indice(posix+i,posiy+j)]==0 && posicion[indice(posix-i,posiy-j)]==0 && posicion[indice(posix+i,posiy-j)]==0 && posicion[indice(posix-i,posiy+j)]==0)			{
 					r_max = r;
+					//	}
+					
 					}
 					else
 					{
+					r_max = r;
+					comp = r_max;
 					break;
 					}
 				}
-
+			if(comp == r_max){break;}
 			}		
-
+		if(comp == r_max){break;}
 		}
-
+	if(comp == r_max){break;}
 	}
 	return r_max;	
 
