@@ -4,17 +4,19 @@ import matplotlib.pyplot as plt
 datos = np.genfromtxt("map_data.txt",delimiter=" ")
 coordenadas = np.genfromtxt("datos.csv")
 
-radio = coordenadas[0]
-xr = coordenadas[1]
-yr = coordenadas[2]
 
+
+radio = coordenadas[2]
+xr = coordenadas[3]
+yr = coordenadas[4]
 fig = plt.figure()
 ax = fig.add_subplot(1,1,1)
 circ= plt.Circle((xr,yr),radius = radio, color = "r" , fill = False)
-ax.imshow(datos)
+ax.imshow(datos,cmap = "winter")
 ax.add_artist(circ)
-ax.plot(xr,yr,"o",label ="Punto nemo")
-plt.legend()
+ax.plot(xr,yr,"o",label ="Punto nemo",color = "k")
+#plt.legend()
+plt.savefig("PuntoNemo.pdf")
 plt.show()
 plt.close()
 

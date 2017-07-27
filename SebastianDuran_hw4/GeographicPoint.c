@@ -10,6 +10,8 @@ int aleatorio_y();
 int i,j;
 int largo = 744;
 int alto = 500;
+float latitud(int y);
+float longitud(int x);
 
 int main(void)
 {
@@ -30,7 +32,7 @@ int main(void)
 	fclose(in);
 	
 
-	srand(1);
+	srand(time(NULL));
 	
 
 	//MARKOV CHAIN 
@@ -94,10 +96,18 @@ int main(void)
 	r_maximo = r_new;
 	x_max = x_new;
 	y_max = y_new;	
+	}	
 	}
+	float coordx = longitud(x_max);
+	float coordy = latitud(y_max);
 	
-	}
-	printf("%f %d %d\n",r_maximo,x_max,y_max);
+	FILE *on;
+	char filen[100] = "datos.csv";
+	on = fopen(filen,"w");
+	fprintf(on,"%f %f %f %d %d\n",coordx,coordy,r_maximo,x_max,y_max);	
+	
+	fclose(on);
+	printf("Las coordenadas del punto mas alejado son: %f, %f\n",coordx,coordy);
 	
 return 0;
 }
@@ -120,13 +130,13 @@ return ind;
 
 int aleatorio_x()
 {
-	int x_alea = rand()% (largo/4+1) - largo/8 ;
+	int x_alea = rand()% (largo/5+1) - largo/10 ;
 	//int x_alea = rand()%largo/5;
 	return x_alea;
 }
 int aleatorio_y()
 {
-	int y_alea = rand()% (alto/2+1) - largo/4;
+	int y_alea = rand()% (alto/3+1) - largo/6;
 	//int y_alea = rand()%alto/3;
 	return y_alea;
 }
@@ -167,7 +177,36 @@ float radius(int posix,int posiy, int *posicion)
 
 }
 
+float latitud(int y)
+{	
 
+	float latitud;
+	if(y > alto/2)
+	{
+	latitud = (90 - y*90/250);
+	}
+	else
+	{
+	latitud = -(90 - y*90/250);
+	}
+	return latitud;
+
+}
+
+float longitud(int x)
+{	
+
+	float longitud;
+	if(x > largo/2)
+	{
+	longitud = (180 - x*180/372);
+	}
+	else
+	{
+	longitud = -(180 - x*180/372);
+	}
+	return longitud;
+}
 
 
 
