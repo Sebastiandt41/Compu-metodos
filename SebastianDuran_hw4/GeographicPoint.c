@@ -3,19 +3,26 @@
 #include <stdio.h>
 #include <time.h>
 
+//Inicializacion de funciones
 int indice(int x , int y);
 float radius(int posx,int posy, int *posicion);
 int aleatorio_x();
 int aleatorio_y();
+double latitud(int y);
+double longitud(int x);
+void print_ll(double coordx, double coordy);
+
+//Variables globales
 int i,j;
 int largo = 744;
 int alto = 500;
-float latitud(int y);
-float longitud(int x);
+
 
 int main(void)
 {
 	int a,b,k;
+	srand(time(NULL));
+
 	//Cargo los datos 
 	int *posicion = malloc((largo*alto)*sizeof(int));
 	FILE *in;
@@ -26,32 +33,25 @@ int main(void)
 		for(a=0;a<largo;a++)
 		{
 		fscanf(in,"%d\n",&posicion[indice(a,b)]);
-		//printf("posicion %d\n",posicion[indice(i,j)]);
 		}
 	}
-	fclose(in);
-	
-
-	srand(time(NULL));
-	
+	fclose(in);	
 
 	//MARKOV CHAIN 
 	
 	int n_pasos = 10000;
-	float beta;
+	float alpha, beta;
 	int xa = aleatorio_x();
 	int ya = aleatorio_y();
 	float r_inicial = radius(xa,ya,posicion);
 	float r_new;
-	int x_max ;
-	int y_max ;
+	int x_max, y_max;	
 	float r_maximo = 0;
 	int x_new, y_new;
-	float alpha;
+	
 
 	for(k=0; k < n_pasos;k++)
-	{	
-		//printf("%d\n",k);
+	{					
 		x_new = xa+aleatorio_x();
 		if(x_new<0)
 		{x_new = largo + x_new%largo;}
@@ -74,9 +74,9 @@ int main(void)
 		r_inicial = r_new;
 		}
 		else if(alpha <1.0)
-		{
-		//beta = rand()/RAND_MAX;
+		{		
 		beta = drand48();
+
 			if(beta < alpha)
 			{
 			xa = x_new;
@@ -85,49 +85,35 @@ int main(void)
 			}
 			else if(beta > alpha)
 			{
-			continue;
-			//xa = xa;
-			//ya = ya;
-			//r_inicial = radius(xa,ya,posicion);
+			continue;			
 			}
 		}
-	if(r_new>r_maximo)
-	{
-	r_maximo = r_new;
-	x_max = x_new;
-	y_max = y_new;	
-	}	
+		if(r_new>r_maximo)
+		{
+		r_maximo = r_new;
+		x_max = x_new;
+		y_max = y_new;	
+		}	
 	}
-	float coordx = longitud(x_max);
-	float coordy = latitud(y_max);
 	
+	//Coordenadas long-lat
+	double coordx = longitud(x_max);
+	double coordy = latitud(y_max);
+	
+	//Escribo los datos de radio y coordenadas
 	FILE *on;
 	char filen[100] = "datos.csv";
 	on = fopen(filen,"w");
 	fprintf(on,"%f %f %f %d %d\n",coordx,coordy,r_maximo,x_max,y_max);	
-	
 	fclose(on);
 
-	if(coordx < 0 && coordy < 0)
-	{
-	printf("Las coordenadas del punto mas alejado son: %f W, %f\n S",-coordx,-coordy);
-	}
-	else if(coordx < 0 && coordy > 0)
-	{
-	printf("Las coordenadas del punto mas alejado son: %f E, %f\n S",-coordx,coordy);
-	}
-	else if(coordx > 0 && coordy > 0)
-	{
-	printf("Las coordenadas del punto mas alejado son: %f E, %f\n N",coordx,coordy);
-	}
-	else if(coordx > 0 && coordy < 0)
-	{
-	printf("Las coordenadas del punto mas alejado son: %f W, %f\n N",coordx,-coordy);
-	}
+	//Print en terminal de las coordenadas del punto nemo
+	print_ll(coordx,coordy);	
 	
 return 0;
 }
 
+//Funcion que transforma indices matriciales en indices lineales
 int indice(int x, int y)
 {
 	if(x<0)
@@ -144,18 +130,19 @@ int ind = alto*x+y;
 return ind;
 }
 
+//Funcion que genera un numero aleatorio 
 int aleatorio_x()
-{
-	int x_alea = rand()% (largo/5+1) - largo/10 ;
-	//int x_alea = rand()%largo/5;
+{		
+	int x_alea = rand()%largo/5;
 	return x_alea;
 }
+//Funcion que genera un numero aleatorio 
 int aleatorio_y()
-{
-	int y_alea = rand()% (alto/3+1) - largo/6;
-	//int y_alea = rand()%alto/3;
+{		
+	int y_alea = rand()%alto/3;
 	return y_alea;
 }
+//Funcion que calcula el radio 
 float radius(int posix,int posiy, int *posicion)
 {
 		
@@ -168,8 +155,7 @@ float radius(int posix,int posiy, int *posicion)
 		{
 			for(j = 0; j< r;j++)
 			{
-			//printf("%d %d\n",i,j);
-			//printf("%d\n",posicion[indice(i,j)]);
+			
 				if(((i*i)+(j*j))<r*r)
 				{
 					if(posicion[indice(posix+i,posiy)]==0 && posicion[indice(posix,posiy+j)]==0 && posicion[indice(posix-i,posiy)]==0 && posicion[indice(posix,posiy-j)]==0 && posicion[indice(posix+i,posiy+j)]==0 && posicion[indice(posix-i,posiy-j)]==0 && posicion[indice(posix+i,posiy-j)]==0 && posicion[indice(posix-i,posiy+j)]==0)
@@ -193,7 +179,8 @@ float radius(int posix,int posiy, int *posicion)
 
 }
 
-float latitud(int y)
+//Funcion que calcula latitud 
+double latitud(int y)
 {	
 
 	float latitud;
@@ -209,9 +196,9 @@ float latitud(int y)
 
 }
 
-float longitud(int x)
+//Funcion que calcula longitud 
+double longitud(int x)
 {	
-
 	float longitud;
 	if(x > largo/2)
 	{
@@ -224,7 +211,26 @@ float longitud(int x)
 	return longitud;
 }
 
-
+//Funcion que imprime las coordenadas de longitud - latitud
+void print_ll(double coordx,double coordy)
+{
+	if(coordx < 0 && coordy < 0)
+		{
+		printf("Las coordenadas del punto mas alejado son: %f W, %f S\n",-coordx,-coordy);
+		}
+		else if(coordx < 0 && coordy > 0)
+		{
+		printf("Las coordenadas del punto mas alejado son: %f E, %f S\n",-coordx,coordy);
+		}
+		else if(coordx > 0 && coordy > 0)
+		{
+		printf("Las coordenadas del punto mas alejado son: %f E, %f N\n",coordx,coordy);
+		}
+		else if(coordx > 0 && coordy < 0)
+		{
+		printf("Las coordenadas del punto mas alejado son: %f W, %f N\n",coordx,-coordy);
+		}
+}
 
 
 

@@ -1,16 +1,18 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+#Leo los archivos
 datos = np.genfromtxt("map_data.txt",delimiter=" ")
 coordenadas = np.genfromtxt("datos.csv")
 
-
+#Separo los datos 
 centro_x=coordenadas[0]
 centro_y=coordenadas[1]
 radio = coordenadas[2]
 xr = coordenadas[3]
 yr = coordenadas[4]
 
+#Plot del punto nemo
 fig = plt.figure()
 ax = fig.add_subplot(1,1,1)
 circ= plt.Circle((xr,yr),radius = radio, color = "r" , fill = False)
