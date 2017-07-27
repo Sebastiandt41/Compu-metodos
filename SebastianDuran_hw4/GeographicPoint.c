@@ -37,7 +37,7 @@ int main(void)
 
 	//MARKOV CHAIN 
 	
-	int n_pasos = 5000;
+	int n_pasos = 10000;
 	float beta;
 	int xa = aleatorio_x();
 	int ya = aleatorio_y();
@@ -107,7 +107,23 @@ int main(void)
 	fprintf(on,"%f %f %f %d %d\n",coordx,coordy,r_maximo,x_max,y_max);	
 	
 	fclose(on);
-	printf("Las coordenadas del punto mas alejado son: %f, %f\n",coordx,coordy);
+
+	if(coordx < 0 && coordy < 0)
+	{
+	printf("Las coordenadas del punto mas alejado son: %f W, %f\n S",-coordx,-coordy);
+	}
+	else if(coordx < 0 && coordy > 0)
+	{
+	printf("Las coordenadas del punto mas alejado son: %f E, %f\n S",-coordx,coordy);
+	}
+	else if(coordx > 0 && coordy > 0)
+	{
+	printf("Las coordenadas del punto mas alejado son: %f E, %f\n N",coordx,coordy);
+	}
+	else if(coordx > 0 && coordy < 0)
+	{
+	printf("Las coordenadas del punto mas alejado son: %f W, %f\n N",coordx,-coordy);
+	}
 	
 return 0;
 }
@@ -142,7 +158,7 @@ int aleatorio_y()
 }
 float radius(int posix,int posiy, int *posicion)
 {
-	//int i,j ;	
+		
 	float comp;
 	float r_max;
 	float r ;
